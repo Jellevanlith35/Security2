@@ -15,16 +15,12 @@ if(!empty($_POST["emailadres"]) && !empty($_POST["wachtwoord"])) {
     
     $saltWachtwoord = "Dit is een encryptie tekst voor het wachtwoord";
     $wachtwoord = md5($saltWachtwoord.$wachtwoord.$saltWachtwoord);
-    $result = mysqli_query($conn, "SELECT * FROM encryptie WHERE emailadres = '$emailadres' AND wachtwoord='$wachtwoord'");
+    $result = mysqli_query($conn, "SELECT CAST(AES_DECRYPT(bericht, '1234567890') AS CHAR(255)) bericht FROM encryptie WHERE emailadres = '$emailadres' AND wachtwoord='$wachtwoord'");
     $rows = mysqli_num_rows($result);
     if($rows > 0) {
         $row = $result->fetch_array();
         $_SESSION["ingelogd"] = true;
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
-        $saltBericht = "Dit is een encryptie tekst voor het bericht";
-        $decrypted_string = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $saltBericht, $row["bericht"], MCRYPT_MODE_CBC, $iv);
-        echo $decrypted_string;
-        $_SESSION["bericht"] = "test";
+        $_SESSION["bericht"] = $row["bericht"];
         echo "Inloggen gelukt";
     }
     else {

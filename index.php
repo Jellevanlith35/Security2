@@ -16,8 +16,6 @@ session_start();
     <textarea rows="5" name="bericht"></textarea><br/>
     <label>Wachtwoord</label><br/>
     <input type="password" placeholder="Wachtwoord..." name="wachtwoord" required/><br/>
-    <label>Bevestig wachtwoord</label><br/>
-    <input type="password" placeholder="Wachtwoord..." name="bevestig-wachtwoord" required/><br/>
     <input type="submit" value="verstuur"/>
 </form>
 <hr>

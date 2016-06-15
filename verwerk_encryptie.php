@@ -18,16 +18,12 @@ if(!empty($_POST["naam"]) && !empty($_POST["emailadres"]) && !empty($_POST["wach
     $rows = mysqli_num_rows($result);
     if($rows == 0) {
         $saltWachtwoord = "Dit is een encryptie tekst voor het wachtwoord";
-        $saltBericht = "Dit is een encryptie tekst voor het bericht";
+        $saltBericht = "1234567891234567";
         
         $wachtwoord = md5($saltWachtwoord.$wachtwoord.$saltWachtwoord);
-        
-        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
-
-        $bericht = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $saltBericht, $bericht, MCRYPT_MODE_CBC, $iv);
-
+       
         $sql = "INSERT INTO encryptie (naam,emailadres, wachtwoord, bericht)
-        VALUES ('$naam', '$emailadres', '$wachtwoord','$bericht')";
+        VALUES ('$naam', '$emailadres', '$wachtwoord',AES_ENCRYPT('$bericht','1234567890'))";
 
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully";
